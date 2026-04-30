@@ -48,7 +48,7 @@ const PostList: React.FC<PostListProps> = ({ posts, onPostClick }) => {
 
   return (
     <>
-      <div className="border-t border-gray-300">
+      <div className="space-y-3">
         {posts.map((post) => {
           const postId = "postId" in post ? post.postId : post.teamPostId;
           const commentCount = post._count?.comments || 0;
@@ -62,14 +62,14 @@ const PostList: React.FC<PostListProps> = ({ posts, onPostClick }) => {
                   : `/posts/${post.postId}`
               }
               onClick={(e) => handlePostClick(post, e)}
-              className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-4 sm:p-5 border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200 group"
+              className="group flex flex-col rounded-xl border border-gray-200 p-4 transition-colors hover:border-gray-300 sm:flex-row sm:items-center sm:justify-between sm:p-5"
             >
               <div className="flex-1 min-w-0 mb-3 sm:mb-0">
                 <div className="flex items-start space-x-3">
                   {/* 타입 배지 */}
                   {"postId" in post && (
-                    <span 
-                      className={`inline-block px-2 py-1 rounded-full text-xs font-medium flex-shrink-0 mt-1`}
+                    <span
+                      className={`mt-1 inline-block flex-shrink-0 rounded-full px-2 py-1 text-xs font-medium`}
                       style={
                         (post as Post).type === "RECRUITMENT" 
                           ? { backgroundColor: '#fef3cd', color: '#856404' }
@@ -82,7 +82,7 @@ const PostList: React.FC<PostListProps> = ({ posts, onPostClick }) => {
                   
                   {/* 제목과 메타 정보 */}
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-base sm:text-lg font-medium text-gray-800 mb-2 group-hover:text-main transition-colors line-clamp-2">
+                    <h3 className="mb-2 line-clamp-2 text-base font-semibold text-gray-800 transition-colors group-hover:text-main sm:text-lg">
                       {post.title}
                     </h3>
                     

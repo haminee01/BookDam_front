@@ -33,7 +33,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="fixed top-0 z-50 w-full border-b border-main/10 bg-white/85 backdrop-blur-md">
+    <header className="fixed top-0 z-50 w-full border-b border-gray-200 bg-white">
       <div className="app-shell flex h-16 items-center justify-between">
         <nav className="hidden flex-1 items-center md:flex">
           <ul className="flex list-none items-center gap-5">

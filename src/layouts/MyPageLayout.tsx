@@ -48,7 +48,7 @@ const MyPageLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
           </div>
 
           <nav
-            className={`app-card h-fit w-full p-4 md:sticky md:top-24 md:block md:w-[260px] ${
+            className={`h-fit w-full p-2 md:sticky md:top-24 md:block md:w-[250px] ${
               isMobileMenuOpen ? "block" : "hidden"
             }`}
           >
@@ -177,7 +177,7 @@ const MyPageLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
             </ul>
           </nav>
 
-          <main className="app-card min-h-[70vh] w-full p-1 md:flex-1">
+          <main className="min-h-[70vh] w-full md:flex-1">
             {children}
             <Outlet />
           </main>

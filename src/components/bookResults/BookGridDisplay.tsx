@@ -56,7 +56,7 @@ const BookGridDisplay: React.FC<BookGridDisplayProps> = ({
   };
 
   return (
-    <div className={`grid gap-x-8 gap-y-12 justify-items-center ${className}`}>
+    <div className={`grid justify-items-center gap-x-6 gap-y-10 ${className}`}>
       {books.map((book, index) => {
         if (!book) {
           return null;
@@ -87,13 +87,15 @@ const BookGridDisplay: React.FC<BookGridDisplayProps> = ({
           <Link
             key={displayIsbn13 || index}
             to={`/books/${displayIsbn13}`}
-            className="group w-52 flex flex-col items-center max-w-full relative"
+            className="group relative flex w-44 max-w-full flex-col items-center sm:w-48 md:w-52"
           >
-            <img
-              src={displayCover || "/x0I5nAsbefrRCgbR6jio5dvWhA.jpg"}
-              alt={displayTitle}
-              className="w-full h-full object-cover rounded-md shadow-md"
-            />
+            <div className="w-full overflow-hidden rounded-lg border border-gray-200 p-2 transition-colors group-hover:border-gray-300">
+              <img
+                src={displayCover || "/x0I5nAsbefrRCgbR6jio5dvWhA.jpg"}
+                alt={displayTitle}
+                className="aspect-[3/4] w-full rounded-lg object-cover"
+              />
+            </div>
 
             {showWishlistButton && (
               <div className="absolute top-2 right-2 z-10">
@@ -111,7 +113,7 @@ const BookGridDisplay: React.FC<BookGridDisplayProps> = ({
               <div className="absolute top-2 right-2 z-10">
                 <button
                   onClick={(event) => handleDeleteButtonClick(book, event)}
-                  className="p-2 rounded-full bg-red-400 bg-opacity-80 text-white hover:bg-red-600 transition-colors duration-200 shadow-md"
+                  className="rounded-full bg-red-500/90 p-2 text-white shadow-md transition hover:bg-red-600"
                   aria-label={`Delete ${book.book.title} from My Library`}
                 >
                   <FaTrash className="w-4 h-4" />
@@ -119,7 +121,7 @@ const BookGridDisplay: React.FC<BookGridDisplayProps> = ({
               </div>
             )}
 
-            <p className="mt-3 text-base text-gray-800 font-medium text-center truncate w-full">
+            <p className="mt-3 w-full truncate text-center text-sm font-semibold text-gray-800 sm:text-base">
               {displayTitle.length > 15
                 ? `${displayTitle.substring(0, 15)}...`
                 : displayTitle}

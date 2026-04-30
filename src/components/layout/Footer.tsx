@@ -1,6 +1,6 @@
 const Footer: React.FC = () => {
   return (
-    <footer className="mt-12 border-t border-main/10 bg-white/80 py-10 text-gray-600 backdrop-blur-sm">
+    <footer className="mt-12 border-t border-gray-200 bg-white py-10 text-gray-600">
       <div className="app-shell">
         <div className="flex w-full flex-col justify-between gap-6 text-sm leading-relaxed md:flex-row md:items-end">
           <div className="flex flex-col space-y-2">
@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
             href="https://github.com/Haleychoioi/sesac-first-project"
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white transition hover:-translate-y-0.5 hover:border-main/40 hover:shadow"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white transition hover:border-main/40"
           >
             <img src="/git.png" className="w-6" />
           </a>

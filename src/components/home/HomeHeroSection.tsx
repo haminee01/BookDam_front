@@ -62,33 +62,35 @@ const HomeHeroSection: React.FC = () => {
           filter: "blur(5px)",
         }}
       />
-      <div className="container mx-auto px-4 z-10 relative pl-16">
-        <h1 className="text-3xl md:text-5xl text-white mb-6">
+      <div className="app-shell relative z-10">
+        <div className="mx-auto max-w-4xl p-6 text-center text-white sm:p-10">
+        <h1 className="mb-6 text-3xl md:text-5xl">
           독서와 사람을 연결하는 플랫폼
           <br />
           지금 시작하세요
         </h1>
-        <p className="text-base md:text-lg text-gray-50 mb-8">
+        <p className="mb-8 text-base text-gray-50 md:text-lg">
           독서로 연결되고, 닉네임으로 소통하다. 익명으로 더 깊은 대화를
           시작하세요.
         </p>
 
-        <div className="max-w-xl mx-auto flex items-center pt-6">
+        <div className="mx-auto flex max-w-xl items-center pt-2">
           <input
             ref={searchInputRef}
             type="text"
             placeholder="어떤 책을 찾아볼까요?"
-            className="flex-grow h-12 p-3 rounded-l-xl border border-gray-300 bg-white bg-opacity-30 backdrop-filter backdrop-blur-md focus:outline-none focus:ring-0 focus:border-white placeholder-gray-200"
+            className="h-12 flex-grow rounded-l-xl border border-white/70 bg-white p-3 text-gray-800 placeholder-gray-500 outline-none focus:border-main focus:ring-2 focus:ring-main/20"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyDown={handleSearchOnEnter}
           />
           <button
             onClick={executeSearch}
-            className="h-12 px-4 md:px-6 py-2 bg-main bg-opacity-90 text-white font-medium rounded-r-xl rounded-none focus:outline-none focus:ring-0 focus:border-transparent transition-all duration-300 hover:bg-opacity-100"
+            className="h-12 rounded-r-xl bg-main px-4 py-2 font-medium text-white transition-colors duration-200 hover:bg-apply md:px-6"
           >
             검색
           </button>
+        </div>
         </div>
       </div>
     </section>

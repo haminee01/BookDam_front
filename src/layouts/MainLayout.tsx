@@ -4,7 +4,7 @@ import Footer from "../components/layout/Footer";
 
 const MainLayout: React.FC = () => {
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-b from-[#FFFCF7] to-[#FFF9EF]">
+    <div className="flex min-h-screen flex-col bg-white">
       <Header />
 
       <main className="flex-grow overflow-x-hidden pb-16 pt-20 md:pt-24">

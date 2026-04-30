@@ -103,22 +103,16 @@ const RecruitingCommunityList: React.FC = () => {
   return (
     <section className="py-8 md:py-12 lg:py-16">
       <div className="text-center mb-8 md:mb-12">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-3">
+        <h2 className="section-title">
           현재 모집 중인 커뮤니티
         </h2>
-        <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto">
+        <p className="section-subtitle mx-auto max-w-2xl">
           함께 읽고 이야기할 독서 모임에 참여해보세요
         </p>
       </div>
 
       {listError && (
-        <div
-          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-6 max-w-2xl mx-auto"
-          role="alert"
-        >
-          <strong className="font-bold">오류: </strong>
-          <span className="block sm:inline">{listError}</span>
-        </div>
+        <div className="status-error mx-auto mb-6 max-w-2xl text-center">오류: {listError}</div>
       )}
 
       <div className="space-y-4 md:space-y-6">
@@ -154,16 +148,13 @@ const RecruitingCommunityList: React.FC = () => {
             const hasApplied = community.hasApplied;
 
             return (
-              <div
-                key={community.id}
-                className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 hover:shadow-md transition-shadow duration-200"
-              >
+              <div key={community.id} className="rounded-xl border border-gray-200 p-4 transition-colors hover:border-gray-300 md:p-6">
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
                   {/* 커뮤니티 정보 */}
                   <div className="flex-1 space-y-3">
                     <div className="flex items-start space-x-3">
                       <div className="flex-shrink-0">
-                        <div className="w-12 h-12 bg-gradient-to-br from-main to-apply rounded-full flex items-center justify-center">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-main to-apply">
                           <FaUserFriends className="w-6 h-6 text-white" />
                         </div>
                       </div>
@@ -198,7 +189,7 @@ const RecruitingCommunityList: React.FC = () => {
                   <div className="flex-shrink-0">
                     <Button
                       onClick={() => handleJoinClick(community)}
-                      className="w-full lg:w-auto px-6 py-2 md:py-3 text-sm md:text-base"
+                      className="w-full lg:w-auto"
                       bgColor={hasApplied ? "bg-gray-400" : "bg-apply"}
                       textColor="text-white"
                       hoverBgColor={

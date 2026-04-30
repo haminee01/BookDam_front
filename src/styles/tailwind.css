@@ -8,7 +8,7 @@
   }
 
   body {
-    @apply bg-[#FFFCF7] text-gray-800 antialiased;
+    @apply bg-white text-gray-800 antialiased;
   }
 
   ::selection {
@@ -22,11 +22,11 @@
   }
 
   .app-card {
-    @apply rounded-2xl border border-main/15 bg-white/95 shadow-sm backdrop-blur-sm transition-all duration-200;
+    @apply rounded-xl border border-gray-200 bg-white transition-colors duration-200;
   }
 
   .app-card-hover {
-    @apply hover:-translate-y-0.5 hover:shadow-md;
+    @apply hover:border-gray-300;
   }
 
   .app-section {
@@ -34,11 +34,11 @@
   }
 
   .input-field {
-    @apply w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-800 outline-none transition focus:border-main/70 focus:ring-2 focus:ring-main/20;
+    @apply w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-800 outline-none transition focus:border-main/70 focus:ring-2 focus:ring-main/15;
   }
 
   .status-message {
-    @apply rounded-xl border px-4 py-3 text-sm;
+    @apply rounded-lg border px-4 py-3 text-sm;
   }
 
   .status-error {
@@ -51,5 +51,17 @@
 
   .status-info {
     @apply status-message border-blue-200 bg-blue-50 text-blue-700;
+  }
+
+  .section-title {
+    @apply text-2xl font-bold tracking-tight text-gray-800 sm:text-3xl;
+  }
+
+  .section-subtitle {
+    @apply mt-2 text-sm text-gray-600 sm:text-base;
+  }
+
+  .skeleton {
+    @apply animate-pulse rounded-xl bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 bg-[length:220%_100%];
   }
 }

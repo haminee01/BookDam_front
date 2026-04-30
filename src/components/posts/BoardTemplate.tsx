@@ -30,15 +30,15 @@ const BoardTemplate: React.FC<BoardTemplateProps> = ({
   return (
     <div className="min-h-full py-6 sm:py-8 md:py-10">
       {/* 헤더 섹션 */}
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 sm:mb-8 space-y-4 sm:space-y-0">
+      <div className="mb-6 flex flex-col space-y-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
         {boardTitle && (
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
+          <h1 className="section-title">
             {boardTitle}
           </h1>
         )}
         <Button
           onClick={onWritePostClick}
-          className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-sm sm:text-base font-medium shadow-sm hover:shadow-md transition-all duration-200"
+          className="w-full sm:w-auto"
         >
           <span className="flex items-center justify-center space-x-2">
             <svg className="w-4 h-4 sm:w-5 sm:h-5 text-main" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,7 +52,7 @@ const BoardTemplate: React.FC<BoardTemplateProps> = ({
       {/* 게시물 목록 */}
       <div className="mb-6 sm:mb-8">
         {isLoading ? (
-          <div className="text-center py-12 sm:py-16">
+          <div className="status-info text-center">
             <div className="inline-block animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-b-2 border-main mb-4"></div>
             <p className="text-gray-600 text-sm sm:text-base">
               게시물을 불러오는 중...

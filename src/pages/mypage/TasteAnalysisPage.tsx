@@ -11,6 +11,7 @@ import type { LibraryStats } from "../../types";
 const TasteAnalysisPage: React.FC = () => {
   const [data, setData] = useState<LibraryStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const formatRating = (value: number) => (value > 0 ? `${value.toFixed(1)}점` : "-");
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -138,9 +139,7 @@ const TasteAnalysisPage: React.FC = () => {
       {!loading && data && data.totalBooks > 0 && (
         <div className="space-y-12">
           <section className="p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">
-              📚 기본 통계
-            </h2>
+            <h2 className="text-2xl font-bold mb-6 text-gray-800">기본 통계</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg">
               <div className="p-5 bg-blue-50 text-blue-800 rounded-lg shadow-sm">
                 <span className="block text-sm text-blue-600 font-semibold mb-1">
@@ -152,17 +151,13 @@ const TasteAnalysisPage: React.FC = () => {
                 <span className="block text-sm text-yellow-600 font-semibold mb-1">
                   평균 평점
                 </span>
-                <span className="text-2xl font-bold">
-                  {data.overallAverageRating.toFixed(1)}점
-                </span>
+                <span className="text-2xl font-bold">{formatRating(data.overallAverageRating)}</span>
               </div>
             </div>
           </section>
 
           <section className="p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">
-              ⭐ 평점 분포
-            </h2>
+            <h2 className="text-2xl font-bold mb-6 text-gray-800">평점 분포</h2>
             <div className="flex justify-center items-end h-40 max-w-lg mx-auto py-4">
               {data.ratingDistribution
                 .sort((a, b) => a.rating - b.rating)
@@ -195,14 +190,10 @@ const TasteAnalysisPage: React.FC = () => {
           </section>
 
           <section className="p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">
-              🏆 선호 카테고리 / 작가 / 출판사
-            </h2>
+            <h2 className="text-2xl font-bold mb-6 text-gray-800">선호 카테고리 / 작가 / 출판사</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="p-5 bg-green-50 rounded-lg shadow-sm">
-                <h3 className="text-lg font-semibold mb-3 text-green-800">
-                  📗 선호 카테고리
-                </h3>
+                <h3 className="text-lg font-semibold mb-3 text-green-800">선호 카테고리</h3>
                 <ul className="space-y-2 text-sm">
                   {data.preferredCategories.map(
                     (
@@ -222,7 +213,7 @@ const TasteAnalysisPage: React.FC = () => {
                           {item.categoryName} ({item.count}권)
                         </span>
                         <span className="font-bold text-green-600">
-                          {item.averageRating.toFixed(1)}점 ({item.percentage}%)
+                          {formatRating(item.averageRating)} ({item.percentage}%)
                         </span>
                       </li>
                     )
@@ -231,9 +222,7 @@ const TasteAnalysisPage: React.FC = () => {
               </div>
 
               <div className="p-5 bg-orange-50 rounded-lg shadow-sm">
-                <h3 className="text-lg font-semibold mb-3 text-orange-800">
-                  ✍️ 선호 작가
-                </h3>
+                <h3 className="text-lg font-semibold mb-3 text-orange-800">선호 작가</h3>
                 <ul className="space-y-2 text-sm">
                   {data.preferredAuthors.map(
                     (
@@ -252,7 +241,7 @@ const TasteAnalysisPage: React.FC = () => {
                           {item.author} ({item.count}권)
                         </span>
                         <span className="font-bold text-orange-600">
-                          {item.averageRating.toFixed(1)}점
+                          {formatRating(item.averageRating)}
                         </span>
                       </li>
                     )
@@ -261,9 +250,7 @@ const TasteAnalysisPage: React.FC = () => {
               </div>
 
               <div className="p-5 bg-purple-50 rounded-lg shadow-sm">
-                <h3 className="text-lg font-semibold mb-3 text-purple-800">
-                  🏢 선호 출판사
-                </h3>
+                <h3 className="text-lg font-semibold mb-3 text-purple-800">선호 출판사</h3>
                 <ul className="space-y-2 text-sm">
                   {data.preferredPublishers.map(
                     (
@@ -282,7 +269,7 @@ const TasteAnalysisPage: React.FC = () => {
                           {item.publisher} ({item.count}권)
                         </span>
                         <span className="font-bold text-purple-600">
-                          {item.averageRating.toFixed(1)}점
+                          {formatRating(item.averageRating)}
                         </span>
                       </li>
                     )
@@ -293,9 +280,7 @@ const TasteAnalysisPage: React.FC = () => {
           </section>
 
           <section className="p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800">
-              📘 전체 카테고리 통계
-            </h2>
+            <h2 className="text-2xl font-bold mb-6 text-gray-800">전체 카테고리 통계</h2>
             <div className="overflow-x-auto rounded-lg border border-gray-200">
               <table className="min-w-full divide-y divide-gray-200 text-sm">
                 <thead className="bg-gray-50">
@@ -334,7 +319,7 @@ const TasteAnalysisPage: React.FC = () => {
                             {item.count}
                           </td>
                           <td className="p-3 whitespace-nowrap text-gray-700">
-                            {item.averageRating.toFixed(1)}
+                            {item.averageRating > 0 ? item.averageRating.toFixed(1) : "-"}
                           </td>
                         </tr>
                       )

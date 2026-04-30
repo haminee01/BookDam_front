@@ -15,26 +15,26 @@ const AppliedCommunityCard: React.FC<AppliedCommunityCardProps> = ({
   onCancelApplication,
 }) => {
   const statusColorClass = {
-    pending: "text-blue-600 bg-blue-100",
-    accepted: "text-green-600 bg-green-100",
-    rejected: "text-red-600 bg-red-100",
+    pending: "text-amber-700 bg-amber-100",
+    accepted: "text-emerald-700 bg-emerald-100",
+    rejected: "text-rose-700 bg-rose-100",
   }[community.myApplicationStatus];
 
   const statusText = {
-    pending: "신청 대기 중",
-    accepted: "신청 수락됨",
-    rejected: "신청 거절됨",
+    pending: "대기",
+    accepted: "수락",
+    rejected: "거절",
   }[community.myApplicationStatus];
 
   return (
-    <div className="bg-gray-100 p-6 flex flex-col justify-between">
+    <div className="flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-6">
       <div className="flex-grow flex flex-col items-start mb-auto">
         <div className="flex justify-between items-center w-full mb-2">
           <h3 className="text-xl font-bold text-gray-800 leading-tight">
             {community.title}
           </h3>
           <span
-            className={`px-2 py-1 rounded-full text-xs font-semibold ${statusColorClass}`}
+            className={`min-w-12 px-2.5 py-1 text-center rounded-full text-xs font-semibold whitespace-nowrap ${statusColorClass}`}
           >
             {statusText}
           </span>

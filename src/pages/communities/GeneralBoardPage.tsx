@@ -58,14 +58,14 @@ const GeneralBoardPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen py-6 sm:py-8 md:py-10 lg:py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="app-section min-h-screen py-6 sm:py-8 md:py-10 lg:py-12">
+      <div>
         {/* 페이지 헤더 */}
-        <div className="text-center mb-8 sm:mb-10 md:mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-4 sm:mb-6">
+        <div className="mb-8 text-center sm:mb-10 md:mb-12">
+          <h1 className="section-title text-4xl sm:text-5xl md:text-6xl">
             책담
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="section-subtitle mx-auto max-w-3xl text-base sm:text-lg md:text-xl">
             어떤 책이든, 어떤 이야기든 좋아요. '책담'에서 당신의 목소리를
             들려주세요.
           </p>
@@ -73,21 +73,21 @@ const GeneralBoardPage: React.FC = () => {
 
         {/* 게시판 내용 */}
         {loading ? (
-          <div className="text-center py-12 sm:py-16 md:py-20">
+          <div className="status-info text-center">
             <div className="inline-block animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-b-2 border-main mb-4"></div>
             <p className="text-gray-600 text-sm sm:text-base md:text-lg">
               게시물을 불러오는 중...
             </p>
           </div>
         ) : error ? (
-          <div className="text-center py-12 sm:py-16 md:py-20">
-            <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
+          <div className="py-10 text-center">
+            <div className="status-error mx-auto max-w-md">
               <div className="text-red-400 mb-4">
                 <svg className="w-12 h-12 mx-auto text-main" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
               </div>
-              <p className="text-red-600 text-sm sm:text-base md:text-lg font-medium">
+              <p className="text-sm font-medium sm:text-base md:text-lg">
                 오류: {error}
               </p>
               <button
