@@ -7,7 +7,7 @@ import type {
 import { isMockMode, isSupabaseConfigured, supabase, toNumericUserId } from "../lib/supabase";
 
 const isFrontendOnlyMode = isMockMode;
-const useSupabaseMode = isSupabaseConfigured && Boolean(supabase);
+const useSupabaseMode = !isMockMode && isSupabaseConfigured && Boolean(supabase);
 const FRONT_ONLY_APPLIED_KEY = "frontOnlyAppliedCommunities";
 
 const getAppliedCommunityIds = (): number[] => {
@@ -29,14 +29,40 @@ const frontendOnlyCommunities: Community[] = [
   {
     id: "101",
     title: "한 달 한 권 독서모임",
-    description: "월 1권 완독 후 온라인 토론을 진행합니다.",
-    hostName: "북담운영진",
-    hostId: 1,
-    currentMembers: 4,
+    description: "월 1권 완독 후 온라인 토론을 진행합니다. 이번 달 도서는 데미안입니다.",
+    hostName: "게스트북러버",
+    hostId: 900001,
+    currentMembers: 6,
     maxMembers: 8,
+    role: "host",
+    status: "활동중",
+    createdAt: "2026-02-01T00:00:00.000Z",
+    hasApplied: true,
+  },
+  {
+    id: "102",
+    title: "퇴근 후 인문학 북클럽",
+    description: "평일 밤 9시에 1시간씩 인문학 책을 읽고 인사이트를 나눕니다.",
+    hostName: "인문러",
+    hostId: 910400,
+    currentMembers: 5,
+    maxMembers: 10,
     role: "member",
     status: "모집중",
-    createdAt: new Date().toISOString(),
+    createdAt: "2026-03-02T00:00:00.000Z",
+    hasApplied: true,
+  },
+  {
+    id: "103",
+    title: "고전 소설 재독 모임",
+    description: "이미 읽은 고전을 다시 읽고 해석을 확장해보는 모임입니다.",
+    hostName: "문학소년",
+    hostId: 910401,
+    currentMembers: 3,
+    maxMembers: 7,
+    role: "member",
+    status: "모집중",
+    createdAt: "2026-03-20T00:00:00.000Z",
   },
 ];
 

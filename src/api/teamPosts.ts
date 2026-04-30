@@ -10,7 +10,7 @@ import {
 import { isMockMode, isSupabaseConfigured, supabase, toNumericUserId } from "../lib/supabase";
 
 const isFrontendOnlyMode = isMockMode;
-const useSupabaseMode = isSupabaseConfigured && Boolean(supabase);
+const useSupabaseMode = !isMockMode && isSupabaseConfigured && Boolean(supabase);
 
 const mapSupabaseTeamPostToTeamPost = (row: any): TeamPost => ({
   teamPostId: row.id,

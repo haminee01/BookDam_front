@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import Button from "../../components/common/Button";
+import { isMockMode } from "../../lib/supabase";
+import { GUEST_PROFILE } from "../../constants/guestAccount";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -22,6 +24,15 @@ const LoginPage: React.FC = () => {
       } else {
         setError("로그인에 실패했습니다. 다시 시도해주세요.");
       }
+    }
+  };
+
+  const handleGuestLogin = async () => {
+    try {
+      await login(GUEST_PROFILE.email, "guest");
+      setError(null);
+    } catch {
+      setError("게스트 로그인에 실패했습니다.");
     }
   };
 
@@ -61,9 +72,26 @@ const LoginPage: React.FC = () => {
           {error && (
             <div className="text-red-500 text-sm text-center">{error}</div>
           )}
-          <Button type="submit" disabled={loading}>
-            {loading ? "로그인 중..." : "로그인"}
-          </Button>
+          <div className="flex items-center justify-center gap-3">
+            <Button type="submit" disabled={loading}>
+              {loading ? "로그인 중..." : "로그인"}
+            </Button>
+            {isMockMode && (
+              <Button
+                type="button"
+                onClick={handleGuestLogin}
+                disabled={loading}
+              >
+                게스트 계정으로 바로 둘러보기
+              </Button>
+            )}
+          </div>
+          {isMockMode && (
+            <p className="text-xs text-gray-500 text-center">
+              회원가입 없이 게스트 계정으로 마이페이지/책담을 포함한 모든 기능을
+              체험할 수 있습니다.
+            </p>
+          )}
           <div className="text-center mt-4">
             <Link
               to="/auth/find-password"

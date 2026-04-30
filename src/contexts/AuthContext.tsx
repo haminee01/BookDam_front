@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import apiClient from "../api/apiClient";
 import type { UserProfile } from "../types/auth";
 import { isMockMode, isSupabaseConfigured, supabase, toNumericUserId } from "../lib/supabase";
+import { GUEST_PROFILE, GUEST_TOKEN, GUEST_USER_ID } from "../constants/guestAccount";
 
 const useLegacyBackendMode =
   !isMockMode && !isSupabaseConfigured && Boolean(import.meta.env.VITE_API_BASE_URL);
@@ -49,6 +50,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // 인증 상태 확인 함수
   const checkAuthStatus = async () => {
     if (isMockMode) {
+      const token = localStorage.getItem("accessToken");
+      const storedUserId = Number(localStorage.getItem("userId") ?? "0");
+      const isGuestSession = token === GUEST_TOKEN && storedUserId === GUEST_USER_ID;
+
+      if (isGuestSession) {
+        setIsLoggedIn(true);
+        setUserId(GUEST_USER_ID);
+        setCurrentUserProfile({
+          userId: GUEST_PROFILE.userId,
+          email: GUEST_PROFILE.email,
+          name: GUEST_PROFILE.name,
+          profileImage: GUEST_PROFILE.profileImage ?? undefined,
+        });
+        return true;
+      }
+
       setIsLoggedIn(false);
       setUserId(null);
       setCurrentUserProfile(null);
@@ -102,6 +119,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     try {
       setLoading(true);
+      if (isMockMode && userId === GUEST_USER_ID) {
+        setCurrentUserProfile({
+          userId: GUEST_PROFILE.userId,
+          email: GUEST_PROFILE.email,
+          name: GUEST_PROFILE.name,
+          profileImage: GUEST_PROFILE.profileImage ?? undefined,
+        });
+        setError(null);
+        return;
+      }
+
       if (isSupabaseConfigured && supabase) {
         const { data: authData } = await supabase.auth.getUser();
         const authUser = authData.user;
@@ -186,8 +214,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // 로그인 함수
   const login = async (email: string, password: string): Promise<boolean> => {
     if (isMockMode) {
-      setError("프론트 단독 모드에서는 로그인 기능을 지원하지 않습니다.");
-      return false;
+      const normalizedEmail = email.trim().toLowerCase();
+      const canGuestLogin =
+        normalizedEmail === GUEST_PROFILE.email && password.trim().length > 0;
+      if (!canGuestLogin) {
+        setError("테스트 계정으로 로그인해주세요. (guest@bookdam.local)");
+        return false;
+      }
+
+      localStorage.setItem("accessToken", GUEST_TOKEN);
+      localStorage.setItem("userId", String(GUEST_USER_ID));
+      setIsLoggedIn(true);
+      setUserId(GUEST_USER_ID);
+      setCurrentUserProfile({
+        userId: GUEST_PROFILE.userId,
+        email: GUEST_PROFILE.email,
+        name: GUEST_PROFILE.name,
+        profileImage: GUEST_PROFILE.profileImage ?? undefined,
+      });
+      setError(null);
+      navigate("/");
+      return true;
     }
 
     try {

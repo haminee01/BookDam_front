@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import MyPageHeader from "../../components/mypage/MyPageHeader";
 import apiClient from "../../api/apiClient";
+import { readFrontOnlyStore } from "../../api/frontOnlyStore";
+import { isMockMode } from "../../lib/supabase";
 
 import type { LibraryStats } from "../../types";
 
@@ -13,6 +15,96 @@ const TasteAnalysisPage: React.FC = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        if (isMockMode) {
+          const library = readFrontOnlyStore().myLibrary;
+          const completed = library.filter((item) => item.status === "COMPLETED");
+          const rated = library.filter((item) => item.myRating !== null);
+          const totalBooks = library.length;
+          const average =
+            rated.length > 0
+              ? rated.reduce((sum, item) => sum + (item.myRating ?? 0), 0) / rated.length
+              : 0;
+
+          const categoryMap = new Map<string, { count: number; score: number }>();
+          const authorMap = new Map<string, { count: number; score: number }>();
+          const publisherMap = new Map<string, { count: number; score: number }>();
+          const ratingMap = new Map<number, number>();
+
+          library.forEach((item) => {
+            const category = item.book.category ?? "기타";
+            const author = item.book.author || "미상";
+            const publisher = item.book.publisher || "미상";
+            const rating = item.myRating ?? 0;
+            const score = item.myRating ?? 0;
+
+            categoryMap.set(category, {
+              count: (categoryMap.get(category)?.count ?? 0) + 1,
+              score: (categoryMap.get(category)?.score ?? 0) + score,
+            });
+            authorMap.set(author, {
+              count: (authorMap.get(author)?.count ?? 0) + 1,
+              score: (authorMap.get(author)?.score ?? 0) + score,
+            });
+            publisherMap.set(publisher, {
+              count: (publisherMap.get(publisher)?.count ?? 0) + 1,
+              score: (publisherMap.get(publisher)?.score ?? 0) + score,
+            });
+            if (rating > 0) {
+              ratingMap.set(rating, (ratingMap.get(rating) ?? 0) + 1);
+            }
+          });
+
+          const allCategoryStats = [...categoryMap.entries()].map(([categoryName, value]) => ({
+            categoryName,
+            count: value.count,
+            averageRating: value.count ? value.score / value.count : 0,
+          }));
+
+          const preferredCategories = allCategoryStats
+            .slice()
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 3)
+            .map((item) => ({
+              ...item,
+              percentage: totalBooks ? Math.round((item.count / totalBooks) * 100) : 0,
+            }));
+
+          const preferredAuthors = [...authorMap.entries()]
+            .map(([author, value]) => ({
+              author,
+              count: value.count,
+              averageRating: value.count ? value.score / value.count : 0,
+            }))
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 3);
+
+          const preferredPublishers = [...publisherMap.entries()]
+            .map(([publisher, value]) => ({
+              publisher,
+              count: value.count,
+              averageRating: value.count ? value.score / value.count : 0,
+            }))
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 3);
+
+          const ratingDistribution = [1, 2, 3, 4, 5].map((rating) => {
+            const count = ratingMap.get(rating) ?? 0;
+            const percentage = rated.length ? Math.round((count / rated.length) * 100) : 0;
+            return { rating, count, percentage };
+          });
+
+          setData({
+            totalBooks: completed.length,
+            overallAverageRating: average,
+            preferredCategories,
+            allCategoryStats,
+            preferredAuthors,
+            preferredPublishers,
+            ratingDistribution,
+          });
+          return;
+        }
+
         const res = await apiClient.get("/mypage/taste-analysis");
         setData(res.data);
       } catch (error) {

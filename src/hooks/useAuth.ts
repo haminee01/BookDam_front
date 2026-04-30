@@ -4,7 +4,8 @@ import { useToast } from "./useToast";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import apiClient from "../api/apiClient";
-import { isSupabaseConfigured, supabase, toNumericUserId } from "../lib/supabase";
+import { isMockMode, isSupabaseConfigured, supabase, toNumericUserId } from "../lib/supabase";
+import { GUEST_PROFILE, GUEST_TOKEN, GUEST_USER_ID } from "../constants/guestAccount";
 
 import type {
   UserProfile,
@@ -32,7 +33,8 @@ interface AuthResult {
 }
 
 export const useAuth = (): AuthResult => {
-  const useSupabaseAuth = isSupabaseConfigured && Boolean(supabase);
+  const useSupabaseAuth = !isMockMode && isSupabaseConfigured && Boolean(supabase);
+  const useFrontendGuestMode = isMockMode;
 
   const navigate = useNavigate();
   const { showToast } = useToast();
@@ -69,6 +71,16 @@ export const useAuth = (): AuthResult => {
   } = useQuery<UserProfile, Error>({
     queryKey: ["currentUserProfile"],
     queryFn: async () => {
+      if (useFrontendGuestMode) {
+        const raw = localStorage.getItem("guestProfile");
+        if (!raw) return GUEST_PROFILE;
+        try {
+          return JSON.parse(raw) as UserProfile;
+        } catch {
+          return GUEST_PROFILE;
+        }
+      }
+
       if (useSupabaseAuth && supabase) {
         const { data: authData, error: authError } = await supabase.auth.getUser();
         if (authError || !authData.user) {
@@ -109,6 +121,15 @@ export const useAuth = (): AuthResult => {
 
   useEffect(() => {
     const checkAuthStatus = () => {
+      if (useFrontendGuestMode) {
+        const token = localStorage.getItem("accessToken");
+        const storedUserId = Number(localStorage.getItem("userId") ?? "0");
+        const isGuestSession = token === GUEST_TOKEN && storedUserId === GUEST_USER_ID;
+        setIsLoggedIn(isGuestSession);
+        setUserId(isGuestSession ? GUEST_USER_ID : null);
+        return;
+      }
+
       if (useSupabaseAuth) {
         supabase!.auth.getSession().then(({ data }) => {
           const session = data.session;
@@ -145,6 +166,21 @@ export const useAuth = (): AuthResult => {
 
   const loginMutation = useMutation({
     mutationFn: async (loginData: { email: string; password: string }) => {
+      if (useFrontendGuestMode) {
+        const normalizedEmail = loginData.email.trim().toLowerCase();
+        const isGuestLogin =
+          normalizedEmail === GUEST_PROFILE.email && loginData.password.trim().length > 0;
+        if (!isGuestLogin) {
+          throw new Error("테스트 계정으로 로그인해주세요. (guest@bookdam.local)");
+        }
+        localStorage.setItem("accessToken", GUEST_TOKEN);
+        localStorage.setItem("userId", String(GUEST_USER_ID));
+        window.dispatchEvent(new Event("loginStatusChange"));
+        showToast("게스트 계정으로 로그인되었습니다.", "success");
+        navigate("/");
+        return;
+      }
+
       if (useSupabaseAuth && supabase) {
         const { data, error } = await supabase.auth.signInWithPassword(loginData);
         if (error) throw error;
@@ -263,6 +299,19 @@ export const useAuth = (): AuthResult => {
 
   const updateProfileMutation = useMutation({
     mutationFn: async (updateData: FormData) => {
+      if (useFrontendGuestMode) {
+        const nickname = updateData.get("nickname")?.toString() ?? GUEST_PROFILE.nickname;
+        const introduction = updateData.get("introduction")?.toString() ?? GUEST_PROFILE.introduction ?? "";
+        const updatedGuest: UserProfile = {
+          ...GUEST_PROFILE,
+          nickname,
+          introduction,
+          updatedAt: new Date().toISOString(),
+        };
+        localStorage.setItem("guestProfile", JSON.stringify(updatedGuest));
+        return { user: updatedGuest, message: "게스트 프로필이 업데이트되었습니다." };
+      }
+
       const response = await apiClient.put<{
         user: UserProfile;
         message: string;
@@ -311,6 +360,10 @@ export const useAuth = (): AuthResult => {
         return { message: "비밀번호가 변경되었습니다." };
       }
 
+      if (useFrontendGuestMode) {
+        return { message: "게스트 계정은 비밀번호 변경이 필요하지 않습니다." };
+      }
+
       const response = await apiClient.put(
         "/mypage/change-password",
         passwordData
@@ -340,6 +393,11 @@ export const useAuth = (): AuthResult => {
 
   const deleteUserMutation = useMutation({
     mutationFn: async () => {
+      if (useFrontendGuestMode) {
+        localStorage.removeItem("guestProfile");
+        return true;
+      }
+
       if (useSupabaseAuth) {
         throw new Error(
           "Supabase 클라이언트에서는 사용자 삭제를 직접 수행할 수 없습니다. 관리자 함수가 필요합니다."

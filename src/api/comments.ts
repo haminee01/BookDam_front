@@ -11,7 +11,7 @@ import {
 import { isMockMode, isSupabaseConfigured, supabase, toNumericUserId } from "../lib/supabase";
 
 const isFrontendOnlyMode = isMockMode;
-const useSupabaseMode = isSupabaseConfigured && Boolean(supabase);
+const useSupabaseMode = !isMockMode && isSupabaseConfigured && Boolean(supabase);
 
 const mapSupabaseCommentToComment = (row: any): Comment => ({
   commentId: row.id,

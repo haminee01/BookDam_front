@@ -4,9 +4,101 @@ import apiClient from "./apiClient";
 import type { Post, Comment, CommunityHistoryEntry } from "../types";
 import { getCurrentUserId, readFrontOnlyStore, writeFrontOnlyStore } from "./frontOnlyStore";
 import { isMockMode, isSupabaseConfigured, supabase, toNumericUserId } from "../lib/supabase";
+import { fetchBestsellers, fetchNewBooks, fetchSpecialNewBooks } from "./books";
 
 const isFrontendOnlyMode = isMockMode;
-const useSupabaseMode = isSupabaseConfigured && Boolean(supabase);
+const useSupabaseMode = !isMockMode && isSupabaseConfigured && Boolean(supabase);
+
+const shuffle = <T,>(items: T[]): T[] => {
+  const copied = [...items];
+  for (let i = copied.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copied[i], copied[j]] = [copied[j], copied[i]];
+  }
+  return copied;
+};
+
+const hasPlaceholderBookData = (title: string, cover: string | null): boolean =>
+  title.startsWith("도서 ") || Boolean(cover && cover.includes("via.placeholder.com"));
+
+const ensureFrontOnlyBookSeeds = async () => {
+  const store = readFrontOnlyStore();
+  const needsLibrarySeed =
+    store.myLibrary.length === 0 ||
+    store.myLibrary.some((item) =>
+      hasPlaceholderBookData(item.book.title, item.book.cover)
+    );
+  const needsWishlistSeed =
+    store.wishlist.length === 0 ||
+    store.wishlist.some((item) =>
+      hasPlaceholderBookData(item.book.title, item.book.cover)
+    );
+
+  if (!needsLibrarySeed && !needsWishlistSeed) {
+    return store;
+  }
+
+  try {
+    const [bestsellers, newBooks, specialBooks] = await Promise.all([
+      fetchBestsellers(1, 20),
+      fetchNewBooks(1, 20),
+      fetchSpecialNewBooks(1, 20),
+    ]);
+
+    const merged = [...bestsellers, ...newBooks, ...specialBooks].filter(
+      (book) => Boolean(book.isbn13 && book.title)
+    );
+    const uniqueByIsbn = Array.from(
+      new Map(merged.map((book) => [book.isbn13, book])).values()
+    );
+    const picked = shuffle(uniqueByIsbn).slice(0, 9);
+
+    if (picked.length === 0) return store;
+
+    if (needsLibrarySeed) {
+      store.myLibrary = picked.slice(0, 6).map((book, idx) => ({
+        libraryId: 7000 + idx + 1,
+        status:
+          idx % 3 === 0
+            ? "READING"
+            : idx % 3 === 1
+              ? "COMPLETED"
+              : "WANT_TO_READ",
+        myRating: idx % 3 === 1 ? 4 + (idx % 2) : null,
+        updatedAt: new Date(Date.now() - idx * 86400000).toISOString(),
+        book: {
+          isbn13: book.isbn13,
+          title: book.title,
+          author: book.author || "작자 미상",
+          publisher: book.publisher || "출판사 정보 없음",
+          cover: book.cover || null,
+          category: book.category || "기타",
+        },
+        user: { nickname: "게스트북러버" },
+      }));
+      store.counters.libraryId = 7000 + store.myLibrary.length;
+    }
+
+    if (needsWishlistSeed) {
+      store.wishlist = picked.slice(3, 9).map((book, idx) => ({
+        wishListId: 8000 + idx + 1,
+        addedAt: new Date(Date.now() - idx * 43200000).toISOString(),
+        book: {
+          isbn13: book.isbn13,
+          title: book.title,
+          cover: book.cover || null,
+        },
+        user: { nickname: "게스트북러버" },
+      }));
+      store.counters.wishListId = 8000 + store.wishlist.length;
+    }
+
+    writeFrontOnlyStore(store);
+    return store;
+  } catch {
+    return store;
+  }
+};
 
 interface WishlistResponseData {
   data: {
@@ -192,7 +284,8 @@ export const fetchWishlist = async (): Promise<
   }
 
   if (isFrontendOnlyMode) {
-    return readFrontOnlyStore().wishlist;
+    const store = await ensureFrontOnlyBookSeeds();
+    return store.wishlist;
   }
 
   try {
@@ -338,7 +431,7 @@ export const fetchMyLibrary = async (
   }
 
   if (isFrontendOnlyMode) {
-    const store = readFrontOnlyStore();
+    const store = await ensureFrontOnlyBookSeeds();
     const filtered = status
       ? store.myLibrary.filter((item) => item.status === status)
       : store.myLibrary;

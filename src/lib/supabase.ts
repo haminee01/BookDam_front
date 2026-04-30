@@ -4,8 +4,8 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
-export const isMockMode =
-  import.meta.env.VITE_FRONT_ONLY_MODE === "true" && !isSupabaseConfigured;
+// 데모/프론트 단독 모드는 Supabase 설정 여부와 무관하게 env 플래그로 강제한다.
+export const isMockMode = import.meta.env.VITE_FRONT_ONLY_MODE === "true";
 
 export const supabase = isSupabaseConfigured
   ? createClient(supabaseUrl, supabaseAnonKey)
