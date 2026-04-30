@@ -18,12 +18,12 @@ const MyPageLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
       location.pathname === "/mypage" &&
       path === "/mypage/communities/participating"
     ) {
-      return "block py-2 px-4 text-main font-semibold border-l-4 border-main";
+      return "block rounded-lg px-4 py-2 text-main font-semibold bg-main/10";
     }
 
     return isActive
-      ? "block py-2 px-4 text-main font-semibold border-l-4 border-main"
-      : "block py-2 px-4 text-gray-700 hover:text-main";
+      ? "block rounded-lg px-4 py-2 text-main font-semibold bg-main/10"
+      : "block rounded-lg px-4 py-2 text-gray-700 hover:bg-main/10 hover:text-main transition";
   };
 
   const toggleMobileMenu = () => {
@@ -31,13 +31,12 @@ const MyPageLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
-      <div className="container mx-auto px-4 lg:px-8 xl:px-20">
-        <div className="flex flex-col md:flex-row">
-          <div className="md:hidden flex justify-end w-full pr-5 pt-3">
+    <div className="app-section">
+      <div className="flex flex-col gap-4 md:flex-row">
+          <div className="flex w-full justify-end pt-2 md:hidden">
             <button
               onClick={toggleMobileMenu}
-              className="text-gray-600 hover:text-gray-900 focus:outline-none"
+              className="rounded-md border border-gray-200 bg-white p-2 text-gray-600 transition hover:border-main/40 hover:text-main focus:outline-none"
               aria-label="Toggle navigation menu"
             >
               {isMobileMenuOpen ? (
@@ -49,11 +48,11 @@ const MyPageLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
           </div>
 
           <nav
-            className={`w-full md:w-1/6 border-r md:border-r-0 border-gray-200 md:block ${
+            className={`app-card h-fit w-full p-4 md:sticky md:top-24 md:block md:w-[260px] ${
               isMobileMenuOpen ? "block" : "hidden"
             }`}
           >
-            <h2 className="text-xl font-bold text-gray-700 mb-4">커뮤니티</h2>
+            <h2 className="mb-4 text-lg font-bold text-gray-700">커뮤니티</h2>
             <ul>
               <li className="mb-2">
                 <Link
@@ -178,11 +177,10 @@ const MyPageLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
             </ul>
           </nav>
 
-          <main className="w-full md:w-5/6">
+          <main className="app-card min-h-[70vh] w-full p-1 md:flex-1">
             {children}
             <Outlet />
           </main>
-        </div>
       </div>
     </div>
   );

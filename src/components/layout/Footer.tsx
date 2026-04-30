@@ -1,24 +1,25 @@
 const Footer: React.FC = () => {
   return (
-    <footer className=" text-gray-600 py-12">
-      <div className="container mx-auto px-4 flex flex-col items-center mb-16">
-        <hr className="border-t border-gray-300 w-full mb-8" />
-        <div className="flex justify-between items-end w-full max-w-5xl text-sm leading-relaxed">
+    <footer className="mt-12 border-t border-main/10 bg-white/80 py-10 text-gray-600 backdrop-blur-sm">
+      <div className="app-shell">
+        <div className="flex w-full flex-col justify-between gap-6 text-sm leading-relaxed md:flex-row md:items-end">
           <div className="flex flex-col space-y-2">
             <p className="text-base font-semibold text-gray-800">Team</p>
-            <ul className="list-none space-x-4 flex">
-              <li className="hover:text-main">최아름</li>
-              <li className="hover:text-main">박민재</li>
-              <li className="hover:text-main">이하민</li>
-              <li className="hover:text-main">김가연</li>
+            <ul className="flex list-none flex-wrap gap-4">
+              <li className="transition hover:text-main">최아름</li>
+              <li className="transition hover:text-main">박민재</li>
+              <li className="transition hover:text-main">이하민</li>
+              <li className="transition hover:text-main">김가연</li>
             </ul>
           </div>
 
           <a
             href="https://github.com/Haleychoioi/sesac-first-project"
             target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white transition hover:-translate-y-0.5 hover:border-main/40 hover:shadow"
           >
-            <img src="/git.png" className="w-10" />
+            <img src="/git.png" className="w-6" />
           </a>
         </div>
       </div>

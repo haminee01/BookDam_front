@@ -1,3 +1,55 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[#FFFCF7] text-gray-800 antialiased;
+  }
+
+  ::selection {
+    @apply bg-main/40 text-gray-900;
+  }
+}
+
+@layer components {
+  .app-shell {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .app-card {
+    @apply rounded-2xl border border-main/15 bg-white/95 shadow-sm backdrop-blur-sm transition-all duration-200;
+  }
+
+  .app-card-hover {
+    @apply hover:-translate-y-0.5 hover:shadow-md;
+  }
+
+  .app-section {
+    @apply app-shell animate-fade-in;
+  }
+
+  .input-field {
+    @apply w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-800 outline-none transition focus:border-main/70 focus:ring-2 focus:ring-main/20;
+  }
+
+  .status-message {
+    @apply rounded-xl border px-4 py-3 text-sm;
+  }
+
+  .status-error {
+    @apply status-message border-red-200 bg-red-50 text-red-600;
+  }
+
+  .status-warn {
+    @apply status-message border-main/30 bg-main/10 text-amber-700;
+  }
+
+  .status-info {
+    @apply status-message border-blue-200 bg-blue-50 text-blue-700;
+  }
+}

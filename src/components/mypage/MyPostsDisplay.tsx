@@ -50,7 +50,7 @@ const MyPostsDisplay: React.FC = () => {
 
   if (!userId) {
     return (
-      <div className="flex justify-center items-center h-48 text-gray-500">
+      <div className="status-warn text-center">
         로그인 후 내가 작성한 글을 확인할 수 있습니다.
       </div>
     );
@@ -58,7 +58,7 @@ const MyPostsDisplay: React.FC = () => {
 
   if (isLoading && !isFetching) {
     return (
-      <div className="flex justify-center items-center h-48 text-gray-600">
+      <div className="status-info text-center">
         <p>글 목록을 불러오는 중입니다...</p>
       </div>
     );
@@ -66,7 +66,7 @@ const MyPostsDisplay: React.FC = () => {
 
   if (isError) {
     return (
-      <div className="flex justify-center items-center h-48 text-red-600">
+      <div className="status-error text-center">
         <p>오류 발생: {error?.message || "글 목록을 불러오지 못했습니다."}</p>
       </div>
     );

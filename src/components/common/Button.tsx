@@ -42,11 +42,11 @@ const Button: React.FC<ButtonProps> = ({
 
   const hasCustomBorderRadius = /(^|\s)rounded(-\w+)?/.test(className);
 
-  const baseStyles = `${finalBgColor} ${finalTextColor} px-5 py-3 font-normal ${finalHoverBgColor} ${finalHoverTextColor} transition-colors duration-200 ${
+  const baseStyles = `${finalBgColor} ${finalTextColor} inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium tracking-tight ${finalHoverBgColor} ${finalHoverTextColor} transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-main/40 ${
     hasCustomBorderRadius ? "" : "rounded-lg"
   }`;
 
-  const disabledStyles = "opacity-50 cursor-not-allowed";
+  const disabledStyles = "opacity-50 cursor-not-allowed pointer-events-none";
 
   const combinedStyles = `${baseStyles} ${className} ${
     disabled ? disabledStyles : ""

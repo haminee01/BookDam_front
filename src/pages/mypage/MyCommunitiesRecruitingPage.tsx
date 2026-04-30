@@ -228,23 +228,17 @@ const MyCommunitiesRecruitingPage: React.FC = () => {
   };
 
   if (isLoadingCommunities || authLoading) {
-    return (
-      <div className="text-center py-12">
-        모집 중인 커뮤니티 목록을 불러오는 중...
-      </div>
-    );
+    return <div className="status-info text-center">모집 중인 커뮤니티 목록을 불러오는 중...</div>;
   }
   if (isErrorCommunities) {
     return (
-      <div className="text-center py-12 text-red-500">
+      <div className="status-error text-center">
         오류: {communitiesError?.message || "데이터를 불러오지 못했습니다."}
       </div>
     );
   }
   if (!currentUserProfile) {
-    return (
-      <div className="text-center py-12 text-red-500">로그인이 필요합니다.</div>
-    );
+    return <div className="status-warn text-center">로그인이 필요합니다.</div>;
   }
 
   return (

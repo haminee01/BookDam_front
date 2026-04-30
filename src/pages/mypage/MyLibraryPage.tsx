@@ -104,19 +104,13 @@ const MyLibraryPage: React.FC = () => {
   );
 
   if (isLoading) {
-    return <div className="text-center py-12">내 서재를 불러오는 중...</div>;
+    return <div className="status-info text-center">내 서재를 불러오는 중...</div>;
   }
   if (isError) {
-    return (
-      <div className="text-center py-12 text-red-500">
-        오류: {error?.message}
-      </div>
-    );
+    return <div className="status-error text-center">오류: {error?.message}</div>;
   }
   if (!currentUserProfile) {
-    return (
-      <div className="text-center py-12 text-red-500">로그인이 필요합니다.</div>
-    );
+    return <div className="status-warn text-center">로그인이 필요합니다.</div>;
   }
 
   const booksToDisplay = myLibraryData || [];

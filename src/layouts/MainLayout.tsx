@@ -3,12 +3,11 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 
 const MainLayout: React.FC = () => {
-
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex min-h-screen flex-col bg-gradient-to-b from-[#FFFCF7] to-[#FFF9EF]">
       <Header />
 
-      <main className="flex-grow pt-16 md:pt-20 lg:pt-24 pb-20 md:pb-24 overflow-x-hidden">
+      <main className="flex-grow overflow-x-hidden pb-16 pt-20 md:pt-24">
         <Outlet />
       </main>
 

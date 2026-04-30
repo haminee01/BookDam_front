@@ -33,14 +33,14 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="bg-white py-4 fixed top-0 w-full z-50">
-      <div className="container mx-auto flex justify-between items-center px-4">
-        <nav className="flex-1 hidden md:flex items-center space-x-4">
-          <ul className="flex items-center space-x-4 list-none">
+    <header className="fixed top-0 z-50 w-full border-b border-main/10 bg-white/85 backdrop-blur-md">
+      <div className="app-shell flex h-16 items-center justify-between">
+        <nav className="hidden flex-1 items-center md:flex">
+          <ul className="flex list-none items-center gap-5">
             <li>
               <Link
                 to="/faq"
-                className="text-gray-600 hover:text-main text-base"
+                className="text-sm font-medium text-gray-600 transition-colors hover:text-main"
               >
                 FAQ
               </Link>
@@ -48,7 +48,7 @@ const Header: React.FC = () => {
             <li>
               <Link
                 to="/about"
-                className="text-gray-600 hover:text-main text-base"
+                className="text-sm font-medium text-gray-600 transition-colors hover:text-main"
               >
                 About
               </Link>
@@ -56,7 +56,7 @@ const Header: React.FC = () => {
             <li>
               <Link
                 to="/posts"
-                className="text-gray-600 hover:text-main text-base"
+                className="text-sm font-medium text-gray-600 transition-colors hover:text-main"
               >
                 책담
               </Link>
@@ -65,17 +65,17 @@ const Header: React.FC = () => {
         </nav>
 
         <div className="flex-grow text-center">
-          <Link to="/" className="text-3xl font-script text-gray-800">
+          <Link to="/" className="text-3xl font-script text-gray-800 transition hover:text-main">
             BookDam
           </Link>
         </div>
 
-        <div className="flex-1 hidden md:flex justify-end items-center space-x-4">
+        <div className="hidden flex-1 items-center justify-end gap-4 md:flex">
           {isLoggedIn ? (
             <>
               <Link
                 to="/mypage"
-                className="text-gray-600 hover:text-main text-base"
+                className="text-sm font-medium text-gray-600 transition-colors hover:text-main"
               >
                 마이페이지
               </Link>
@@ -86,7 +86,7 @@ const Header: React.FC = () => {
                 textColor="text-gray-600"
                 hoverTextColor="hover:text-main"
                 hoverBgColor="hover:transparent"
-                className="text-base"
+                className="px-0 text-sm font-medium"
               >
                 로그아웃
               </Button>
@@ -96,13 +96,13 @@ const Header: React.FC = () => {
               <Link
                 to="/mypage"
                 onClick={handleMyPageClick}
-                className="text-gray-600 hover:text-main text-base"
+                className="text-sm font-medium text-gray-600 transition-colors hover:text-main"
               >
                 마이페이지
               </Link>
               <Link
                 to="/auth/login"
-                className="text-gray-600 hover:text-main text-base"
+                className="text-sm font-medium text-gray-600 transition-colors hover:text-main"
               >
                 로그인
               </Link>
@@ -110,11 +110,11 @@ const Header: React.FC = () => {
           )}
         </div>
 
-        <div className="md:hidden flex items-center space-x-2">
+        <div className="flex items-center space-x-2 md:hidden">
           {!isMyPagePath && (
             <button
               onClick={toggleMobileMenu}
-              className="text-gray-600 hover:text-main focus:outline-none"
+              className="rounded-md p-1 text-gray-600 transition hover:bg-main/10 hover:text-main focus:outline-none"
             >
               {isMobileMenuOpen ? (
                 <FaTimes className="w-6 h-6" />
@@ -127,7 +127,7 @@ const Header: React.FC = () => {
       </div>
 
       {isMobileMenuOpen && (
-        <div className="md:hidden px-4 pt-2 pb-4 shadow-lg border-t border-gray-200">
+        <div className="border-t border-main/10 bg-white/95 px-4 pb-4 pt-2 shadow-lg md:hidden">
           <nav>
             <ul className="flex flex-col space-y-2 list-none">
               {isLoggedIn ? (

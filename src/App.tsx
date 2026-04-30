@@ -66,7 +66,13 @@ function App() {
             draggable
             pauseOnHover
             limit={3}
+            toastClassName={() =>
+              "rounded-xl border border-main/20 bg-white shadow-md"
+            }
             toastStyle={{
+              color: "#374151",
+              fontSize: "0.9rem",
+              fontWeight: 500,
               maxWidth: "90vw",
               width: "auto",
               whiteSpace: "pre-wrap",

@@ -37,16 +37,16 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <section id="loginText" className="container mx-auto py-12 px-20 mt-10">
-        <h1 className="text-3xl font-semibold mb-6">환영합니다, 로그인</h1>
-        <p>
+    <div className="app-section">
+      <section id="loginText" className="mb-8 mt-4">
+        <h1 className="mb-4 text-3xl font-semibold text-gray-900">환영합니다, 로그인</h1>
+        <p className="text-gray-600">
           당신의 독서 여정을 시작하기 위해 로그인하세요.함께 책을 나누고
           소통합시다.
         </p>
       </section>
-      <section id="login" className="container mx-auto py-12 px-20">
-        <form onSubmit={handleLogin} className="space-y-4 max-w-md mx-auto">
+      <section id="login" className="app-card mx-auto max-w-xl p-6 sm:p-8">
+        <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <input
               type="email"
@@ -55,7 +55,7 @@ const LoginPage: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="이메일을 입력하세요"
               required
-              className="w-full border border-gray-300 rounded px-4 py-2"
+              className="input-field"
             />
           </div>
           <div>
@@ -66,11 +66,11 @@ const LoginPage: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="비밀번호를 입력하세요"
               required
-              className="w-full border border-gray-300 rounded px-4 py-2"
+              className="input-field"
             />
           </div>
           {error && (
-            <div className="text-red-500 text-sm text-center">{error}</div>
+            <div className="status-error text-center">{error}</div>
           )}
           <div className="flex items-center justify-center gap-3">
             <Button type="submit" disabled={loading}>
@@ -95,14 +95,14 @@ const LoginPage: React.FC = () => {
           <div className="text-center mt-4">
             <Link
               to="/auth/find-password"
-              className="text-sm text-gray-600 hover:text-main underline"
+              className="text-sm text-gray-600 underline underline-offset-2 transition hover:text-main"
             >
               비밀번호를 잊으셨나요?
             </Link>
           </div>
         </form>
       </section>
-      <section id="register" className="container mx-auto py-12 px-20">
+      <section id="register" className="py-10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-3">
           <div>
             <h2 className="text-2xl font-bold mb-4">
