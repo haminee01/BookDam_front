@@ -91,45 +91,41 @@ const CommunityBoardPage: React.FC = () => {
     setCurrentPage(page);
   };
 
-  if (loading) {
+  if (error) {
     return (
-      <BoardTemplate
-        boardTitle="게시물"
-        posts={[]}
-        onWritePostClick={handleWritePostClick}
-        onPostClick={handlePostClick}
-        isLoading={true}
-        currentPage={1}
-        totalPages={1}
-        onPageChange={handlePageChange}
-      />
+      <div className="app-section py-6 sm:py-8 md:py-10">
+        <div className="text-center p-8 text-red-600">오류: {error}</div>
+      </div>
     );
   }
 
-  if (error) {
-    return <div className="text-center p-8 text-red-600">오류: {error}</div>;
-  }
-
-  if (!communityInfo) {
+  if (!loading && !communityInfo) {
     return (
-      <div className="text-center p-8 text-gray-700">
-        커뮤니티 정보를 찾을 수 없습니다.
+      <div className="app-section py-6 sm:py-8 md:py-10">
+        <div className="text-center p-8 text-gray-700">
+          커뮤니티 정보를 찾을 수 없습니다.
+        </div>
       </div>
     );
   }
 
   return (
-    <BoardTemplate
-      boardTitle={`${communityInfo.postTitle}${communityInfo.bookTitle ? ` - ${communityInfo.bookTitle}` : ""
-        }`}
-      posts={communityPosts}
-      onWritePostClick={handleWritePostClick}
-      onPostClick={handlePostClick}
-      isLoading={loading}
-      currentPage={currentPage}
-      totalPages={totalPages}
-      onPageChange={handlePageChange}
-    />
+    <div className="app-section">
+      <BoardTemplate
+        boardTitle={
+          communityInfo
+            ? `${communityInfo.postTitle}${communityInfo.bookTitle ? ` - ${communityInfo.bookTitle}` : ""}`
+            : "게시물"
+        }
+        posts={communityPosts}
+        onWritePostClick={handleWritePostClick}
+        onPostClick={handlePostClick}
+        isLoading={loading}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
+    </div>
   );
 };
 
